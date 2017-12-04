@@ -35,7 +35,7 @@
           }
         },
       
-        enabled: true ,
+        enabled: true,
 
         loadclip: function() {
           var d = null
@@ -47,7 +47,15 @@
             var cross = $('<div>').addClass('cross').appendTo(d).text('X')
             cross.on('click', function(){ d.remove() })
           }
-          d.find('.content').text(this.getClipboardContents())
+          
+          var clip = this.getClipboardContents()
+          var list = this.parselist()
+          var inlist = list.includes(clip.replace(/(\s|\n)/g, ""))
+          d.find('.content').text(clip  + "\n" + inlist)
+        },
+        
+        parselist: function(){
+          return captor_list_data.split('\n')
         }
     }
 }())

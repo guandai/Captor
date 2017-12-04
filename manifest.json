@@ -14,7 +14,7 @@
   "content_scripts": [
   {
       "css": ["main.css"],
-      "js": ["jquery.js", "event.js", "kernel.js"],
+      "js": ["jquery.js", "event.js", "kernel.js", "list.js"],
       "run_at": "document_end",
       "matches": ["*://*/*"],
       "all_frames": true
