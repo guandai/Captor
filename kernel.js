@@ -26,9 +26,28 @@
             cc.remove();
             return val;
         },
+        
+        toggle: function(){
+          this.enabled = !this.enabled
+          console.log("Captor.enabled:",this.enabled)
+          if(this.enabled == false && $('#captor_result').length) {
+            $('#captor_result').remove();
+          }
+        },
+      
+        enabled: true ,
 
         loadclip: function() {
-            console.log(this.getClipboardContents())
+          var d = null
+          if ($('#captor_result').length) {
+            d = $('#captor_result') 
+          } else {
+            d = $('<div>').addClass('result').appendTo('body').attr("id", "captor_result")
+            var content = $('<div>').addClass('content').appendTo(d)
+            var cross = $('<div>').addClass('cross').appendTo(d).text('X')
+            cross.on('click', function(){ d.remove() })
+          }
+          d.find('.content').text(this.getClipboardContents())
         }
     }
 }())

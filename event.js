@@ -108,15 +108,21 @@
     
     var pushed = false
     $(document).on('keydown', function(event) {
-        if (Captor && pushed == false && event.keyCode == 118) {
+        if (Captor && Captor.enabled && pushed == false && event.keyCode == 118) {
             console.log("keydown F7")
             pushed = true
             Captor.loadclip()
         }
+        
+        if (Captor && pushed == false && event.keyCode == 117) {
+            console.log("keydown F6")
+            pushed = true
+            Captor.toggle()
+        }
     });
 
     $(document).on('keyup', function(event) {
-        console.log("keyup!")
+        console.log("Captor.enabled:",Captor.enabled)
         pushed = false
     });
 
