@@ -1,4 +1,4 @@
-(function (undefined) {      
+(function(undefined) {
     var SPECIAL_KEYS = {
         8: 'backspace',
         9: 'tab',
@@ -32,8 +32,18 @@
         221: ']',
         222: '\'',
         220: '\\',
-        48: '0', 49: '1', 50: '2', 51: '3', 52: '4', 53: '5', 54: '6', 55: '7', 56: '8', 57: '9',
-        33: 'pgup', 34: 'pgdown',
+        48: '0',
+        49: '1',
+        50: '2',
+        51: '3',
+        52: '4',
+        53: '5',
+        54: '6',
+        55: '7',
+        56: '8',
+        57: '9',
+        33: 'pgup',
+        34: 'pgdown',
         112: 'f1',
         113: 'f2',
         114: 'f3',
@@ -76,9 +86,15 @@
     var REG_KEYS = {
         '=': 187,
         '-': 189,
-        '0': 48, '1': 49, '2': 50,
-        '3': 51, '4': 52, '5': 53,
-        '6': 54, '7': 55, '8': 56,
+        '0': 48,
+        '1': 49,
+        '2': 50,
+        '3': 51,
+        '4': 52,
+        '5': 53,
+        '6': 54,
+        '7': 55,
+        '8': 56,
         '9': 57
     };
 
@@ -93,37 +109,60 @@
         ctrl: true,
         shift: true,
         cmd: true,
-        f1: true, f2: true, f3: true, f4: true, f5: true, f6: true,
-        f7: true, f8: true, f9: true, f10: true, f11: true, f12: true,
+        f1: true,
+        f2: true,
+        f3: true,
+        f4: true,
+        f5: true,
+        f6: true,
+        f7: true,
+        f8: true,
+        f9: true,
+        f10: true,
+        f11: true,
+        f12: true,
         win: true
     };
 
-    var isModificationKey = function (key) {
+    var isModificationKey = function(key) {
         return key in MOD_KEYS;
     };
 
-    var isRegularKey = function (key) {
+    var isRegularKey = function(key) {
         return key in REG_KEYS;
     };
+
+    var pushed = []
+    var keymap = { "toggle_key": MAP.b, "test_key": MAP.e, "test_mod": MAP.ctrl }
+    var key_arr = Object.values(keymap)
     
-    var pushed = false
     $(document).on('keydown', function(event) {
-        if (Captor && Captor.enabled && pushed == false && event.keyCode == 118) {
-            console.log("keydown F7")
-            pushed = true
-            Captor.loadclip()
+        if (!Captor || !key_arr.includes(event.keyCode)) return;
+
+        for(let i in keymap) {
+            if (!pushed[i] && event.keyCode == keymap[i]) pushed[i] = true
         }
         
-        if (Captor && pushed == false && event.keyCode == 117) {
-            console.log("keydown F6")
-            pushed = true
-            Captor.toggle()
+        if (pushed['toggle_key'] && pushed['test_mod']) {
+            Captor.toggle();
+            Captor.quickshow(Captor.enabled ? 'Captor Enabled' : 'Captor Disabled');
+        }
+
+        if (!Captor.enabled) return;
+        
+        if (pushed['test_key'] && pushed['test_mod'] && Captor.test_clip()) {
+            Captor.quickshow(Captor.getClipboardContents() + " => " + Captor.test_clip())
         }
     });
 
     $(document).on('keyup', function(event) {
-        console.log("Captor.enabled:",Captor.enabled)
-        pushed = false
+        if (!Captor || !key_arr.includes(event.keyCode)) return;
+        for(let i in keymap) {
+          // console.log(22, pushed[i] == true , event.keyCode == keymap[i], event.keyCode , keymap[i])
+          if ( pushed[i] == true && event.keyCode == keymap[i]) {
+              pushed[i] = false;
+          }
+        }
     });
 
 })();

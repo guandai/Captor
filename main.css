@@ -1,6 +1,7 @@
 .result {
-	width: 200px;
-	height: 150px;
+	width: 400px;
+	height: 50px;
+	border-radius: 10px;
 	position: fixed;
 	background-color: #969696b3;
 	bottom: 10px;
@@ -20,4 +21,10 @@
     width: 14px;
     height: 10px;
     border-radius: 20px;
+}
+
+.hidden_text {
+	position: 'absolute';
+    top: -1000;
+    left: -1000;
 }

@@ -2,11 +2,7 @@
     window.Captor = {
         addTextfieldToBody: function() {
             return $('<textarea>')
-                .css({
-                    position: 'absolute',
-                    top: -1000,
-                    left: -1000
-                })
+                .addClass('.hidden_text')
                 .appendTo('body');
         },
 
@@ -37,7 +33,13 @@
       
         enabled: true,
 
-        loadclip: function() {
+        test_clip: function() {
+          var clipboard_str = this.getClipboardContents()
+          var list = this.parselist()
+          return list.includes(clipboard_str.replace(/(\s|\n)/g, ""))
+        },
+        
+        get_msg_div: function() {
           var d = null
           if ($('#captor_result').length) {
             d = $('#captor_result') 
@@ -47,15 +49,15 @@
             var cross = $('<div>').addClass('cross').appendTo(d).text('X')
             cross.on('click', function(){ d.remove() })
           }
-          
-          var clip = this.getClipboardContents()
-          var list = this.parselist()
-          var inlist = list.includes(clip.replace(/(\s|\n)/g, ""))
-          d.find('.content').text(clip  + "\n" + inlist)
+          return d
+        },
+
+        quickshow: function(msg) {
+          var d = this.get_msg_div()
+          d.find('.content').text(msg)
+          d.fadeIn( 200 ).delay( 1000 ).fadeOut( 200 )
         },
         
-        parselist: function(){
-          return captor_list_data.split('\n')
-        }
+        parselist: () => captor_list_data.split('\n')
     }
 }())
